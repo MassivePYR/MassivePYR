@@ -79,7 +79,7 @@
 <br />
 
 ---
-
+/*
 ### 📺 Latest YouTube Videos
 
 <!-- YOUTUBE:START -->
@@ -92,7 +92,7 @@
 
 ➡️ [more videos...](https://youtube.com/codestackr)
 
----
+
 
 ### 📕 Latest Blog Posts
 
@@ -106,7 +106,7 @@
 
 ➡️ [more blog posts...](https://codestackr.com)
 
----
+
 
 <details>
   <summary>:zap: Recent GitHub Activity</summary>
@@ -138,3 +138,4 @@
 [jsplaylist]: https://www.youtube.com/playlist?list=PLkwxH9e_vrALRJKu7wfXby3MKeflhTu6B
 [cssplaylist]: https://www.youtube.com/playlist?list=PLkwxH9e_vrALSdvZuEh6gqQdmDoDIoqz4
 [reactplaylist]: https://www.youtube.com/playlist?list=PLkwxH9e_vrAK4TdffpxKY3QGyHCpxFcQ0
+  */
