@@ -2,6 +2,7 @@
 
 [![linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/jeovah-reis-03b77a163/)
 [![instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/jeovah.rn/)
+[![steam](![Steam](https://img.shields.io/badge/steam-%23000000.svg?style=for-the-badge&logo=steam&logoColor=white))](https://steamcommunity.com/id/MassivePYR)
 
 </div></br>
 ⚡ - Programador, Editor, Jogador, Musico e Design - ⚡
