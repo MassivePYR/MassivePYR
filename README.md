@@ -7,6 +7,8 @@
 </div></br>
 ⚡ - Programador, Editor, Jogador, Musico e Design - ⚡
 
+![Snake animation](https://github.com/massivepyr/massivepyr/blob/output/github-contribution-grid-snake.svg)
+
 ### 
 ![MassivePYR's GitHub stats](https://github-readme-stats.vercel.app/api?username=massivepyr&show_icons=true&theme=dracula)
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=massivepyr&theme=dracula)](https://github.com/massivepyr/github-readme-stats)
@@ -18,7 +20,6 @@
 <img align="center" alt="Dart" src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white"/>
 <img align="center" alt="Flutter" src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white"/>
 
-![Snake animation](https://github.com/massivepyr/massivepyr/blob/output/github-contribution-grid-snake.svg)
 <!--
 
 # Hi there, I'm Jesse - aka [codeSTACKr][youtube] 👋 
