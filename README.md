@@ -18,7 +18,7 @@
 <img align="center" alt="Dart" src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white"/>
 <img align="center" alt="Flutter" src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white"/>
 
-![Snake animation](https://github.com/rafaballerini/rafaballerini/blob/output/github-contribution-grid-snake.svg)
+![Snake animation](https://github.com/massivepyr/massivepyr/blob/output/github-contribution-grid-snake.svg)
 <!--
 
 # Hi there, I'm Jesse - aka [codeSTACKr][youtube] 👋 
