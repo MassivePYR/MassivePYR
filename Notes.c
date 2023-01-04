@@ -1,6 +1,6 @@
 //Welcome to my anotations, if got in here without my permission... i hope you get a better life than being a homelass, god bless you and stop doing this kind of childish thing.. 
 //I hope your IP MAC dont get two times in my log and you know why... ;)
-/*
+
 ____________________________________________________________________________________________________________________________________________________________________________________
 
 (Home Academia project:){		
@@ -231,5 +231,4 @@ void interseção (int *A, int a, int *B, int b, int *I, int *con){
     }
 }
 }
-
-*/
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
