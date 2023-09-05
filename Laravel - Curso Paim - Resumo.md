@@ -328,4 +328,5 @@ Class TesteController extends Controller{
 já é bem claro o porque ser pouco ou não utilizado,
 o casting é feito de forma singular, então, necessita ser chamado, o método, toda vez que for passar alguma variável.
 com 2 o código já fica maior do que o "compact".
+
 ---
