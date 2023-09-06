@@ -640,3 +640,165 @@ last - verifica se é a última iteração
     }
 @endphp
 ```
+## @count/@endcount
+count - conta a quantidade de elementos de um array ou coleção
+```
+<p>Quantidade: {{ count($array) }}</p>
+```
+```
+@php
+    echo 'Quantidade: '.count($array);
+@endphp
+```
+pode ser utilizado em conjunto com o loop para saber a quantidade de iterações
+```
+@foreach($array as $key => $value)
+    <p>Chave: {{ $key }} - Valor: {{ $value }}</p>
+    @if($loop->count == 1)
+        <p>Única iteração</p>
+    @endif
+@endforeach
+```
+```
+@php
+    foreach($array as $key => $value){
+        echo 'Chave: '.$key.' - Valor: '.$value;
+        if(count($array) == 1){
+            echo 'Única iteração';
+        }
+    }
+@endphp
+```
+## @include/@includeIf/@includeWhen/@includeFirst/@each
+include - inclui uma view
+
+includeIf - inclui uma view se a condição for verdadeira
+
+includeWhen - inclui uma view quando a condição for verdadeira
+
+includeFirst - inclui a primeira view que existir
+
+each - inclui uma view para cada elemento de um array ou coleção
+```
+@include('site.includes.sidebar')
+```
+```
+@includeIf('site.includes.sidebar')
+```
+```
+@includeWhen($p1 == $p2, 'site.includes.sidebar')
+```
+```
+@includeFirst(['site.includes.sidebar', 'site.includes.sidebar2'])
+```
+```
+@each('site.includes.sidebar', $array, 'value')
+```
+## @stack/@push/@prepend
+stack - cria uma pilha de conteúdo
+
+push - adiciona conteúdo na pilha
+
+prepend - adiciona conteúdo no início da pilha
+
+```
+@stack('scripts')
+```
+```
+@push('scripts')
+    <script>
+        alert('Teste');
+    </script>
+@endpush
+```
+```
+@prepend('scripts')
+    <script>
+        alert('Teste');
+    </script>
+@endprepend
+```
+## @section/@endsection/@show/@yield/@extends
+section - define uma seção de conteúdo
+
+endsection - finaliza uma seção de conteúdo
+
+show - exibe o conteúdo de uma seção
+
+yield - exibe o conteúdo de uma seção
+
+extends - define que a view estende outra view
+
+``` 
+@section('titulo', 'Título da página')
+```
+```
+@section('conteudo')
+    <p>Conteúdo da página</p>
+@endsection
+```
+```
+@section('conteudo')
+    <p>Conteúdo da página</p>
+@show
+```
+```
+@section('conteudo')
+    <p>Conteúdo da página</p>
+@yield('conteudo')
+```
+```
+@extends('site.layouts.basico')
+```
+## @auth/@endauth/@guest/@endguest
+auth - verifica se o usuário está autenticado
+
+endauth - finaliza a verificação de autenticação
+
+guest - verifica se o usuário não está autenticado
+
+endguest - finaliza a verificação de não autenticação
+```
+@auth
+    <p>Usuário autenticado</p>
+@endauth
+```
+```
+@guest
+    <p>Usuário não autenticado</p>
+@endguest
+```
+# @csrf
+o que é o token @crsf e para que serve?
+
+o token crsf é um método de segurança que o laravel utiliza para evitar ataques de cross-site request forgery,
+ou seja, é um token que é gerado pelo laravel e que é enviado para o navegador do usuário,
+e quando o usuário envia um formulário, esse token é enviado junto, e o laravel verifica se o token é válido,
+se for, o formulário é processado, se não, o formulário é rejeitado.
+
+# Models
+Models são as classes que representam as tabelas do banco de dados, ou seja,
+são as classes que representam os dados da aplicação.
+
+Dentro das models também são criados os relacionamentos entre as tabelas regra de negócio
+(1-n, n-n, 1-1, etc...) usando o ORM Eloquent,
+os termos só diferem em serem escritos por extenso em inglês.(onehasmany, manytomany, onetoone, etc...)
+
+## Criando um model
+para criar um model, basta executar o comando artisan make:model NomeModel
+```
+php artisan make:model Cliente -mrc
+```
+o parâmetro -mrc cria o model, a migration, o controller e as rotas para o controller
+
+o mrc é flexivel, pois é um conjunto de comandos que podem ser usados separadamente, por exemplo, se eu quiser criar apenas o model e a migration, eu posso executar o comando:
+```
+php artisan make:model Cliente -m
+```
+## Criando uma migration
+uma migration é um arquivo que contém as instruções para criar uma tabela no banco de dados.
+
+para criar uma migration, basta executar o comando artisan make:migration NomeMigration
+```
+php artisan make:migration create_clientes_table
+```
