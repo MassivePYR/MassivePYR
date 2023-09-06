@@ -351,7 +351,7 @@ Idade = {{ $array['idade'] }}
 
 as partes do Blade Foram puladas por não serem tão importantes para o momento, mas, é importante saber que existe e que é uma ferramenta muito poderosa.
 
-## Uma leve passada no PHP/blade - Dicionário de ferramentas do Blade/PHP
+# Uma leve passada no PHP/blade - Dicionário de ferramentas do Blade/PHP
 @dd - dump and die - mostra o que tem dentro da variável e para a execução do código
 
 ```
@@ -363,7 +363,7 @@ as partes do Blade Foram puladas por não serem tão importantes para o momento,
 @dump($array)
 ```
 
-### @if/@else
+## @if/@else
 estrutura condicional
 ```	
 @if($p1 > $p2)
@@ -386,7 +386,7 @@ estrutura condicional
 @endphp
 ```
 
-### @unless
+## @unless
 o inverso do if
 
 ```
@@ -405,7 +405,7 @@ em php o mais proximo seria o if not if(!(condição)) ou if(x1 != x2), ex:
 @endphp
 ```
 
-### @isset - verifica se a variável existe.
+## @isset - verifica se a variável existe.
 se sim, executa o que está dentro do bloco
 
 ```
@@ -422,7 +422,7 @@ se sim, executa o que está dentro do bloco
 @endphp
 ```
 
-### @empty
+## @empty
 verifica se a variável está vazia, se sim, retorna true.
 
 ```
@@ -439,7 +439,7 @@ verifica se a variável está vazia, se sim, retorna true.
 @endphp
 ```
 
-### Ternário - operador ternário
+## Ternário - operador ternário
 é um if simplificado
 
 ```
@@ -452,7 +452,7 @@ verifica se a variável está vazia, se sim, retorna true.
 @endphp
 ```
 
-### ?? - Null Coalesce
+## ?? - Null Coalesce
 verifica se a variável existe, se sim, retorna o valor dela, se não, retorna o valor padrão
 
 ```
@@ -465,7 +465,7 @@ verifica se a variável existe, se sim, retorna o valor dela, se não, retorna o
 @endphp
 ```
 
-### @switch/@case/@break/@default
+## @switch/@case/@break/@default
 switch é um if com várias condições, ou seja, se alguma condição for verdadeira, ele executa o bloco referente a ela
 
 ```
@@ -502,7 +502,7 @@ switch é um if com várias condições, ou seja, se alguma condição for verda
 @endphp
 ```
 
-### @for/@endfor
+## @for/@endfor
 for é um laço de repetição "para", ou seja, para cada iteração, ele executa o bloco
 
 ```
@@ -519,7 +519,7 @@ for é um laço de repetição "para", ou seja, para cada iteração, ele execut
 @endphp
 ```
 
-### @while/@endwhile
+## @while/@endwhile
 while é um laço de repetição "enquanto", ou seja, enquanto a condição for verdadeira, ele executa o bloco
 
 ```
@@ -544,7 +544,7 @@ while é um laço de repetição "enquanto", ou seja, enquanto a condição for 
 @endphp
 ```
 
-### @foreach/@endforeach
+## @foreach/@endforeach
 foreach é um laço de repetição para arrays e coleções de dados (objetos) "para cada"
 
 ```
@@ -561,7 +561,7 @@ foreach é um laço de repetição para arrays e coleções de dados (objetos) "
 @endphp
 ```
 
-### @forelse/@empty/@endforelse
+## @forelse/@empty/@endforelse
 forelse é um foreach com else, ou seja, se o array estiver vazio, ele executa o else ao invés do foreach
 
 ```
@@ -584,7 +584,7 @@ forelse é um foreach com else, ou seja, se o array estiver vazio, ele executa o
 @endphp
 ```
 
-### @continue/@break
+## @continue/@break
 continue - pula para a próxima iteração do laço
 
 break - sai do laço
@@ -610,7 +610,7 @@ break - sai do laço
     }
 @endphp
 ```
-### @loop/@first/@last
+## @loop/@first/@last
 loop - variável que contém informações sobre o laço atual
 
 first - verifica se é a primeira iteração
