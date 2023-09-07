@@ -802,40 +802,162 @@ para criar uma migration, basta executar o comando artisan make:migration NomeMi
 ```
 php artisan make:migration create_clientes_table
 ```
-os parametros da tabela devem ser editados dentro do arquivo criado na pasta database/migrations
 
-cada parametro deve ser implementado assim
+criou uma tabela que não precisava? não tem problema, basta executar o comando artisan migrate:rollback
 ```
-$table->tipo('nome_da_coluna');
+php artisan migrate:rollback --step=1
 ```
-para criar uma coluna com um valor padrão, basta adicionar o método default('valor') ao final da instrução
-```
-$table->tipo('nome_da_coluna')->default('valor');
-```
-para criar uma coluna que não pode ser nula, basta adicionar o método nullable(false) ao final da instrução
-```
-$table->tipo('nome_da_coluna')->nullable(false);
-```
-para criar uma coluna que é chave primária, basta adicionar o método primary ao final da instrução
-```
-$table->tipo('nome_da_coluna')->primary();
-```
-para criar uma coluna que é chave estrangeira, basta adicionar o método foreign ao final da instrução
-```
-$table->tipo('nome_da_coluna')->foreign();
-```
-para criar uma coluna que é chave estrangeira e que referencia outra tabela, basta adicionar o método references('nome_da_coluna') ao final da instrução
-```
-$table->tipo('nome_da_coluna')->foreign()->references('nome_da_coluna');
-```
-para criar uma coluna que é chave estrangeira e que referencia outra tabela e outra coluna, basta adicionar o método on('nome_da_tabela') ao final da instrução
-```
-$table->tipo('nome_da_coluna')->foreign()->references('nome_da_coluna')->on('nome_da_tabela');
-```
-e assim por diante... tudo isso pode ser achado dentro da documentação do Laravel na parte de database/migrations.<a href="https://laravel.com/docs/10.x/migrations"> aqui</a>
+o parâmetro --step=1 define quantas migrations serão desfeitas, se não for definido, todas as migrations serão desfeitas.
 
-## Executando uma migration
-para executar uma migration, basta executar o comando artisan migrate
+precisa desfazer todas as migrations? basta executar o comando artisan migrate:reset
 ```
-php artisan migrate
+php artisan migrate:reset
 ```
+precisa adicionar mais informações na tabela? basta criar uma nova migration
+```
+php artisan make:migration add_campo_to_clientes_table
+```
+ou editar a migration existente e executar o comando artisan migrate:refresh
+```
+php artisan migrate:refresh
+```
+## adicionando chaves estrangeiras
+### 1:1
+primeiro, é necessário criar a migration da tabela que receberá a chave estrangeira nesse exemplo, a tabela produtos já existe(tabela origem), então, basta criar a tabela relação "produtos_detalhes" onde serão contidos os detalhes dos produtos.
+```
+php artisan make:migration create_produtos_detalhes_table
+```
+assim, é criada a migration da tabela produtos_detalhes já com o down function básico implementado, então, basta adicionar os campos que serão necessários
+```
+Schema::create('produtos_detalhes', function (Blueprint $table) {
+    //colunas
+    $table->id();
+    $table->unsignedBigInteger('produto_id');
+    $table->float('comprimento', 8, 2);
+    $table->float('largura', 8, 2);
+    $table->float('altura', 8, 2);
+    $table->timestamps();
+
+    //constraint
+    $table->foreign('produto_id')->references('id')->on('produtos');
+    $table->unique('produto_id'); //garante o relacionamento 1:1
+});
+```
+dessa forma só é necessário executar o comando artisan migrate e a tabela será criada.
+
+### 1:n
+... continuando o exemplo anterior, agora, uma tabela chamada unidades que se relaciona com a tabela produtos e produtos_detalhes. todo esse processo é muito parecido com o anterior, a diferença é que agora é que não temos o constraint unique, que limitava o relacionamento anterior a 1:1. além disso quem recebe a chave estrangeira é a tabela produtos_detalhes e a tabela produtos.
+```
+php artisan make:migration create_unidades_table
+```
+```
+Schema::create('unidades', function (Blueprint $table) {
+    //colunas
+    $table->id();
+    $table->string('unidade', 5); //cm, mm, kg, g, etc...
+    $table->string('descricao', 30);
+    $table->timestamps();
+
+    // adicionando o relacionamento com a tabela produtos.
+    schema::table('produtos', function(Blueprint $table){
+        $table->unsignedBigInteger('unidade_id');
+        $table->foreign('unidade_id')->references('id')->on('unidades');
+    });
+
+    // adicionando o relacionamento com a tabela produtos_detalhes.
+    schema::table('produtos_detalhes', function(Blueprint $table){
+        $table->unsignedBigInteger('unidade_id');
+        $table->foreign('unidade_id')->references('id')->on('unidades');
+    });
+
+    // além disso resta implementar o down function.
+    public function down()
+    {
+        Schema::table('produtos', function(Blueprint $table){
+            $table->dropForeign('produto_unidade_id_foreign'); //[tabela]_[coluna]_foreign - nome padrão do laravel
+            $table->dropColumn('unidade_id');
+        });
+
+        Schema::table('produtos_detalhes', function(Blueprint $table){
+            $table->dropForeign('produto_detalhes_unidade_id_foreign');
+            $table->dropColumn('unidade_id');
+        });
+
+        Schema::dropIfExists('unidades');
+    }
+    //usa a lógica inversa da criação da tabela para desfazer as alterações.
+});
+```
+tudo pronto, basta executar o comando artisan migrate e as tabelas serão criadas.
+
+### n:n
+... continuando o mesmo projeto, criaremos uma tabela chamada filiais, para temos um relacionamento n:n com a tabela produtos é necessário criar uma tabela relacionamento, que no caso será a tabela produto_filiais.
+```
+php artisan make:migration ajuste_produtos_filiais
+```
+```
+no up function:
+
+//criando a tabela filiais
+    Schema::create('filiais', function (Blueprint $table) {
+        $table->id();
+        $table->string('filial', 30);
+        $table->timestamps();
+    });
+
+//criando a tabela produto_filiais
+    Schema::create('produto_filiais', function (Blueprint $table) {
+        $table->id();
+        $table->unsignedBigInteger('filial_id');
+        $table->unsignedBigInteger('produto_id');
+        $table->decimal('preco_venda', 8, 2);
+        $table->integer('estoque_minimo');
+        $table->integer('estoque_maximo');
+        $table->timestamps();
+
+        //foreign keys (constraints)
+        $table->foreign('filial_id')->references('id')->on('filiais');
+        $table->foreign('produto_id')->references('id')->on('produtos');
+    });
+
+    //removendo colunas da tabela produtos
+    Schema::table('produtos', function(Blueprint $table){
+        $table->dropColumn(['preco_venda', 'estoque_minimo', 'estoque_maximo']);
+    });
+
+no down function:
+
+    //adicionar colunas da tabela produtos
+    Schema::table('produtos', function(Blueprint $table){
+        $table->decimal('preco_venda', 8, 2);
+        $table->integer('estoque_minimo');
+        $table->integer('estoque_maximo');
+    });
+    
+    Schema::dropIfExists('produto_filiais');
+    Schema::dropIfExists('filiais');
+```
+tudo pronto, basta executar o comando artisan migrate e as tabelas serão criadas.
+
+## Migrate After
+por padrão, as migrations são executadas em ordem alfabética, mas, e se eu quiser que uma migration seja executada depois de outra? se eu já tiver criado a tabela mas queira a re-orderar? basta adicionar o atributo after na migration.
+
+primeiro criaremos uma migration alter_fornecedores_table
+```
+php artisan make:migration alter_fornecedores_nova_coluna_site_com_after
+```
+na function up, adicionaremos a coluna site depois da coluna nome
+```
+Schema::table('fornecedores', function(Blueprint $table){
+    $table->string('site', 150)->after('nome')->nullable();
+});
+```
+na function down, removeremos a coluna site
+```
+Schema::table('fornecedores', function(Blueprint $table){
+    $table->dropColumn('site');
+});
+```
+agora basta executar a migration, pronto.
+
+## Status, Reset, Refresh e Fresh
