@@ -1350,3 +1350,152 @@ se a resposta for true, o registro foi deletado com sucesso.
 
 ## Soft Delete
 o soft delete é um recurso que permite que os registros não sejam deletados do banco de dados, mas, que sejam marcados como deletados, ou seja, o registro não é deletado, mas, não é mais exibido nas consultas.
+
+para usar o soft delete, basta adicionar a trait SoftDeletes no model
+```
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Cliente extends Model
+{
+    use SoftDeletes;
+}
+```
+e em migrations:
+```
+Public function up()
+{
+    Schema::create('clientes', function (Blueprint $table) {
+        $table->id();
+        $table->string('nome', 100);
+        $table->string('telefone', 20);
+        $table->string('email', 100);
+        $table->timestamps();
+        $table->softDeletes();
+    });
+}
+
+public function down()
+{
+    Schema::dropSoftDeletes('clientes');
+}
+```
+Excutando o comando artisan migrate, é criado um campo chamado deleted_at na tabela clientes.
+
+assim, para excluir um registro, do banco de dados de verdade e não apenas marcar como deletado, basta usar o metodo forceDelete()
+```
+use \App\Cliente;
+$cliente = Cliente::find(1);
+$cliente->forceDelete();
+```
+
+### Restaurando registros
+para restaurar registros, basta usar o metodo restore()
+```
+use \App\Cliente;
+$cliente = Cliente::withTrashed()->find(1);
+$cliente->restore();
+```
+nesse caso, o withTrashed() busca o registro mesmo que ele esteja marcado como deletado e o restore() restaura o registro.
+
+para selecionar somente os registros removidos, basta usar o metodo onlyTrashed()
+```
+use \App\Cliente;
+$cliente = Cliente::onlyTrashed()->get();
+```
+nesse caso, o onlyTrashed() busca somente os registros que estão marcados como deletados.
+
+## Seeders
+Seeders são classes que servem para popular o banco de dados com dados fictícios, ou seja, são classes que servem para popular o banco de dados com dados de teste.
+
+para criar um seeder, basta executar o comando artisan make:seeder NomeSeeder
+```
+php artisan make:seeder ClientesSeeder
+```
+o seeder é criado na pasta database/seeds
+
+temos que definir o que será inserido no banco de dados no metodo run()
+```
+use App\Cliente;
+public function run()
+{
+    //instanciando o Objeto
+    $cliente = new Cliente();
+    $cliente->nome = 'João';
+    $cliente->telefone = '11 99999-9999';
+    $cliente->email = 'jao@clientes.com';
+    $cliente->save();
+
+    //usando o metodo create(atenção ao fillable no model)
+    Cliente::create([
+        'nome' => 'Maria',
+        'telefone' => '11 99199-9999',
+        'email' => 'dascolves@clientes.com';
+    ]);
+
+    //usando o metodo insert
+    DB::table('clientes')->insert([
+        'nome' => 'Marya',
+        'telefone' => '11 99929-9999',
+        'email' => 'dascanela@cliente.com
+}
+```
+lembrando também que temos que definir o seeder no arquivo database/seeds/DatabaseSeeder.php
+```
+public function run()
+{
+    $this->call(ClientesSeeder::class);
+}
+```
+para executar o seeder, basta executar o comando artisan db:seed
+```
+php artisan db:seed
+```
+
+por padrão, o comando db:seed executa todos os seeders, mas, se eu quiser executar um seeder específico, basta executar o comando artisan db:seed --class=NomeSeeder
+```
+php artisan db:seed --class=ClientesSeeder
+```
+
+## Factories
+as factories permitem, através de um seeder, semear em massa uma tabela do banco de dados.
+
+as factories do framework laravel utilizam o faker, que é um gerador de dados fictícios, ou seja, é um gerador de dados de teste.
+
+as factories são criadas na pasta database/factories
+
+para criar uma factory, basta executar o comando artisan make:factory NomeFactory
+```
+php artisan make:factory ClienteFactory --model=Cliente
+```
+lembrando de sempre terminar o nome da factory com Factory, pois, esse padrão facilita identificar as factories.
+
+a factory é criada na pasta database/factories
+
+temos que definir o que será inserido no banco de dados no metodo definition()
+```
+use App\Cliente;
+use Faker\Generator as Faker;
+
+$factory->define(Cliente::class, function (Faker $faker) {
+    return [
+        'nome' => $this->faker->name,
+        'telefone' => $this->faker->phoneNumber,
+        'email' => $this->faker->unique()->safeEmail,
+    ];
+});
+```
+essa ferramenta possuí uma grande variedade de dados fictícios, para saber mais, basta acessar a documentação oficial do faker<a href='https://github.com/fzaninotto/Faker'> aqui</a>.
+ claro que ainda resta definir o seeder no arquivo ClienteSeeder.php
+```
+public function run()
+{
+    \App\Cliente::factory()->count(100)->create();
+}
+```
+para executar o seeder, basta executar o comando artisan db:seed
+```
+php artisan db:seed
+```
+pronto seu banco está bem populado e pronto para desenvolver testes com mais precisão
+
+--fim da seção 8--
