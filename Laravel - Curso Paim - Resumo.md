@@ -961,3 +961,71 @@ Schema::table('fornecedores', function(Blueprint $table){
 agora basta executar a migration, pronto.
 
 ## Status, Reset, Refresh e Fresh
+
+Status -> mostra o status das migrations
+```
+php artisan migrate:status
+```
+Reset -> desfaz todas as migrations
+```
+php artisan migrate:reset
+```
+Refresh -> desfaz todas as migrations e executa novamente
+```
+php artisan migrate:refresh
+```
+Fresh -> desfaz todas as migrations e executa novamente, mas, não executa as migrations que já foram executadas
+```
+php artisan migrate:fresh
+```
+## Rollback
+
+Rollback -> desfaz a última migration
+```
+php artisan migrate:rollback
+```
+Rollback --step=2 -> desfaz as duas últimas migrations
+```
+php artisan migrate:rollback --step=2
+```
+## Eloquente ORM
+ORM (Object Relational Mapping) é um mapeamento objeto-relacional, ou seja, é uma técnica de desenvolvimento que consiste em mapear as tabelas do banco de dados em classes e os registros das tabelas em objetos.
+
+Eloquent é o ORM do Laravel, ele é responsável por fazer o mapeamento objeto-relacional. O Eloquent é uma implementação do Active Record, que é um padrão de projeto que mapeia as tabelas do banco de dados em classes e os registros das tabelas em objetos.
+
+## Tinker
+Tinker é uma ferramenta que permite executar comandos do Laravel através do terminal, é muito útil para testar o código.
+para acessar o tinker, basta executar o comando artisan tinker
+```
+php artisan tinker
+```
+## Criando um registro
+para criar um registro, basta instanciar a classe e atribuir os valores aos atributos
+```
+$cliente = new \App\Cliente();
+$cliente->nome = 'João';
+$cliente->telefone = '11 99999-9999';
+Print_r($cliente->getAttributes()); // serve para mostrar os atributos do objeto instanciado
+```
+
+em seguida, basta executar o método save()
+```
+$cliente->save();
+```
+
+## Ajustando o nome da tabela no Model para um correto ORM
+o Eloquent parte do nome da classe para definir a tabela que está escrita no padrão camelCase, ex:
+```
+SiteContato
+```
+o Eloquent entende que a tabela é site_contatos 
+pois sempre que hover uma letra maiúscula,
+ele adiciona um underline antes da letra maiúscula e transforma todas as letras em minúsculas e adiciona um "s" no final.
+
+porém, se o nome da classe for Fornecedor, o Eloquent entende que a tabela é fornecedors, pois, ele não entende que o plural de fornecedor é fornecedores, para isso, é necessário definir o nome da tabela no model.
+```
+class Fornecedor extends Model
+{
+    protected $table = 'fornecedores';
+}
+```
