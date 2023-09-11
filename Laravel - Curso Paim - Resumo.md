@@ -988,7 +988,7 @@ Rollback --step=2 -> desfaz as duas últimas migrations
 ```
 php artisan migrate:rollback --step=2
 ```
-## Eloquente ORM
+# Eloquente ORM
 ORM (Object Relational Mapping) é um mapeamento objeto-relacional, ou seja, é uma técnica de desenvolvimento que consiste em mapear as tabelas do banco de dados em classes e os registros das tabelas em objetos.
 
 Eloquent é o ORM do Laravel, ele é responsável por fazer o mapeamento objeto-relacional. O Eloquent é uma implementação do Active Record, que é um padrão de projeto que mapeia as tabelas do banco de dados em classes e os registros das tabelas em objetos.
@@ -999,7 +999,7 @@ para acessar o tinker, basta executar o comando artisan tinker
 ```
 php artisan tinker
 ```
-## Criando um registro
+### Criando um registro
 para criar um registro, basta instanciar a classe e atribuir os valores aos atributos
 ```
 $cliente = new \App\Cliente();
@@ -1013,7 +1013,7 @@ em seguida, basta executar o método save()
 $cliente->save();
 ```
 
-## Ajustando o nome da tabela no Model para um correto ORM
+### Ajustando o nome da tabela no Model para um correto ORM
 o Eloquent parte do nome da classe para definir a tabela que está escrita no padrão camelCase, ex:
 ```
 SiteContato
@@ -1031,7 +1031,7 @@ class Fornecedor extends Model
 ```
 quando nomear uma tabela e necessário fechar o tinker e abrir novamente para que o tinker reconheça a alteração.
 
-## Create e Fillable
+### Create e Fillable
 primeiro de tudo, o metodo create() é um metodo estatico, cabe a nos sabermos a diferença entre o metodo estático e o metodo convencional.
 
 o metodo estático não depende da instancia de um objeto para ser executado, ou seja, não é necessário instanciar a classe para executar o metodo, ex:
@@ -1054,7 +1054,7 @@ class Cliente extends Model
 ```
 novamente é necessário fechar o tinker e abrir novamente para que o tinker reconheça a alteração.
 
-## Eloquent selecionando registros
+## selecionando registros
 
 ### all()
 o metodo all() retorna todos os registros da tabela
@@ -1143,7 +1143,7 @@ já no metodo wherenotbetween() é o inverso, ou seja, busca todos os registros 
 use \App\Cliente;
 $clientes = Cliente::wherenotbetween('id', [1,3])->get();
 ```
-## Selecionando registros com dois ou mais "Wheres"
+### Selecionando registros com dois ou mais "Wheres"
 para selecionar registros com dois ou mais wheres, basta encadear os metodos where(), ex:
 ```
 use \App\Cliente;
@@ -1151,7 +1151,7 @@ $clientes = Cliente::where('nome','<>','João')->whereIn('motivo_contato', [1,2]
 ```
 nesse caso, o where() busca todos os registros que não contenham o nome "João" no campo nome, o wherein() busca todos os registros que contenham os valores 1 ou 2 no campo motivo_contato e o wherebetween() busca todos os registros que contenham os valores entre 2021-01-01 00:00:00 e 2021-01-31 00:00:00 no campo created_at.
 
-## Selecionando registros com "Or"
+### Selecionando registros com "Or"
 para selecionar registros com "or", basta encadear o metodo orwhere(), lembrando que no operador or somente uma das condições precisa ser verdadeira para que o registro seja retornado, ex:
 ```
 use \App\Cliente;
@@ -1159,7 +1159,7 @@ $clientes = Cliente::where('nome','<>','João')->orwhere('motivo_contato', 1)->g
 ```
 nesse caso, o where() busca todos os registros que não contenham o nome "João" no campo nome e o orwhere() busca todos os registros que contenham o valor 1 no campo motivo_contato.
 
-## Selecionando registros com "WhereNotNull"
+### Selecionando registros com "WhereNotNull"
 para selecionar registros com "wherenotnull", basta encadear o metodo wherenotnull(), ex:
 ```
 use \App\Cliente;
@@ -1167,7 +1167,7 @@ $clientes = Cliente::where('nome','<>','João')->wherenotnull('motivo_contato')-
 ```
 nesse caso, o where() busca todos os registros que não contenham o nome "João" no campo nome e o wherenotnull() busca todos os registros que não contenham o valor null no campo motivo_contato.
 
-## Selecionando registros com "WhereNull"
+### Selecionando registros com "WhereNull"
 para selecionar registros com "wherenull", basta encadear o metodo wherenull(), ex:
 ```
 use \App\Cliente;]
@@ -1175,7 +1175,7 @@ $clientes = Cliente::whereNotNull('updated_at')->get();
 ```
 nesse caso, o wherenotnull() busca todos os registros que não contenham o valor null no campo updated_at.
 
-## Selecionando registros com "WhereDate"
+### Selecionando registros com "WhereDate"
 para selecionar registros com "wheredate", basta .. ex:
 ```
 use \App\Cliente;
@@ -1204,7 +1204,7 @@ $clientes = Cliente::whereYear('created_at', '2021')->get();
 ```
 nesse caso, o whereyear() busca todos os registros que contenham o ano 2021 no campo created_at.
 
-## Selecionando registros com "WhereTime"
+### Selecionando registros com "WhereTime"
 para selecionar registros com "wheretime", basta .. ex:
 ```
 use \App\Cliente;
@@ -1212,7 +1212,7 @@ $clientes = Cliente::whereTime('created_at', '08:00:00')->get();
 ```
 nesse caso, o wheretime() busca todos os registros que contenham o horário 08:00:00 no campo created_at.
 
-## Selecionando registros com "WhereColumn"
+### Selecionando registros com "WhereColumn"
 para selecionar registros com "wherecolumn", basta .. ex:
 ```
 use \App\Cliente;
@@ -1228,7 +1228,7 @@ $clientes = Cliente::where('nome','<>','João')->orwhere(function($query){
     $query->wherein('motivo_contato', [1,2]);
 })->get();
 ```
-## Ordenando registros
+### Ordenando registros
 para ordenar registros, basta encadear o metodo orderby(), ex:
 ```
 use \App\Cliente;
@@ -1247,7 +1247,6 @@ nesse caso, o orderby() ordena os registros em ordem decrescente pelo campo nome
 # Introdução as Collections
 Collections são objetos que representam uma coleção de dados, ou seja, são objetos que representam um conjunto de dados.
 
-## Eloquente - Collections first,last e reverse
 ### first()
 o metodo first() retorna o primeiro registro da coleção
 ```
@@ -1278,7 +1277,7 @@ $clientes = Cliente::where('nome','<>','João')->orwhere(function($query){
 ```
 nesse caso, o reverse() retorna a coleção em ordem reversa.
 
-## Eloquent - Collection toArray e toJson
+## ToArray e ToJson
 ### toArray()
 o metodo toArray() retorna a coleção em formato de array
 ```
@@ -1295,7 +1294,7 @@ $clientes = Cliente::all()->toJson();
 ```
 nesse caso, o toJson() retorna a coleção em formato de json.
 
-## Eloquent - pluck
+### pluck
 o metodo pluck() retorna uma coleção com os valores de uma coluna específica
 ```
 use \App\Cliente;
@@ -1303,6 +1302,51 @@ $clientes = Cliente::all()->pluck('email');
 ```
 nesse caso, o pluck() retorna uma coleção com os valores da coluna email.
 
-## Eloquent - metodos nativos dos objetos Collection
+### Eloquent - metodos nativos dos objetos Collection
 por ser uma lista gigantesca, não será possível abordar todos os metodos nativos dos objetos Collection, mas, é possível acessar a documentação oficial do laravel para saber mais sobre os metodos nativos dos objetos Collection.
 <a href='https://laravel.com/docs/10.x/collections'>aqui</a>
+
+---
+# atualizando registros
+para atualizar registros, basta instanciar a classe e atribuir os valores aos atributos
+```
+$cliente = \App\Cliente::find(1);
+$cliente->nome = 'João';
+$cliente->telefone = '11 99999-9999';
+Print_r($cliente->getAttributes());
+// serve para mostrar os atributos do objeto instanciado
+```
+em seguida, basta executar o método save()
+```
+$cliente->save();
+```
+## Fill()
+utilizando o declarado no fillable do model, podemos usar o metodo fill() para atribuir os valores aos atributos
+```
+$cliente = \App\Cliente::find(1);
+$cliente->fill(['nome' => 'João', 'telefone' => '11 99999-9999']);
+$cliente->save();
+```
+## Where->update()
+podemos usar o metodo where() para buscar os registros que queremos atualizar e em seguida usar o metodo update() para atualizar os registros
+```
+\App\Cliente::wherein('id', [1,2])->update(['nome' => 'Fornecedor Teste', 'site' => 'fornecedor.com.br']);
+```
+nesse caso, o where() busca todos os registros que contenham os valores 1 ou 2 no campo id e o update() atualiza os registros com os valores 'Fornecedor Teste' no campo nome e 'fornecedor.com.br' no campo site.
+
+## Delete e Destroy (Deletando Registros)
+
+```
+use \App\Cliente;
+$cliente = Cliente::find(1);
+$cliente->delete();
+```
+se a resposta for true, o registro foi deletado com sucesso.
+```
+use \App\Cliente;
+$cliente = Cliente::destroy(1);
+```
+se a resposta for true, o registro foi deletado com sucesso.
+
+## Soft Delete
+o soft delete é um recurso que permite que os registros não sejam deletados do banco de dados, mas, que sejam marcados como deletados, ou seja, o registro não é deletado, mas, não é mais exibido nas consultas.
