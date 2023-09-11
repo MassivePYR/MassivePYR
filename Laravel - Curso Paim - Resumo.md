@@ -1029,3 +1029,280 @@ class Fornecedor extends Model
     protected $table = 'fornecedores';
 }
 ```
+quando nomear uma tabela e necessário fechar o tinker e abrir novamente para que o tinker reconheça a alteração.
+
+## Create e Fillable
+primeiro de tudo, o metodo create() é um metodo estatico, cabe a nos sabermos a diferença entre o metodo estático e o metodo convencional.
+
+o metodo estático não depende da instancia de um objeto para ser executado, ou seja, não é necessário instanciar a classe para executar o metodo, ex:
+```
+\App\Cliente::create(['nome' => 'Maria', 'telefone' => '11 99999-9999']);
+```
+o metodo convencional depende da instancia de um objeto para ser executado, ou seja, é necessário instanciar a classe para executar o metodo, ex:
+```
+$cliente = new \App\Cliente();
+$cliente->nome = 'João';
+$cliente->telefone = '11 99999-9999';
+$cliente->save();
+```
+para usar o create é necessario preencher o atributo fillable no model, ex:
+```
+class Cliente extends Model
+{
+    protected $fillable = ['nome','telefone'];
+}
+```
+novamente é necessário fechar o tinker e abrir novamente para que o tinker reconheça a alteração.
+
+## Eloquent selecionando registros
+
+### all()
+o metodo all() retorna todos os registros da tabela
+```
+\App\Cliente::all();
+```
+lembrando que podemos usar o dd()->toArray() para ver o resultado do metodo
+```
+dd(\App\Cliente::all()->toArray());
+```
+ou mesmo dentro do print_r
+```
+print_r(\App\Cliente::all()->toArray());
+```
+ou ainda um foreach
+```
+foreach(\App\Cliente::all() as $key => $value){
+    echo $value->nome; echo '<br/>';
+}
+```
+dando caracteristicas ao Output
+
+### find()
+o metodo find() retorna um registro específico da tabela, a diferença é que o find() recebe a primary_key, o id, do registro como parâmetro
+```
+\App\Cliente::find(1);
+```
+### where()
+o metodo where() retorna um ou mais registros da tabela
+esse metodo diferente do metodo all() e find() é na verdade um construtor, ele permite que sejam adicionados mais metodos a ele para construir uma query mais complexa de acesso aos registros no banco de dados.
+```
+*where(comparação)operadores logicos(comparação);
+```
+temos os principais operadores logicos:
+```
+> maior que
+< menor que
+>= maior ou igual que
+<= menor ou igual que
+<> - diferente de
+like - semelhante a
+```
+exemplo:
+```
+use \App\Cliente;
+$clientes = Cliente::where('nome', 'João')->get();
+```
+ainda temos o operador == que pode ser omitido, ex:
+```
+use \App\Cliente;
+$clientes = Cliente::where('nome', 'João')->get();
+```
+por fim temos o operador like que é usado para buscar registros semelhantes, ex:
+```
+use \App\Cliente;
+$clientes = Cliente::where('nome', 'like', '%a%')->get();
+```
+nesse caso, o like busca todos os registros que contenham a letra "a" no nome.
+não importando o que vem antes ou depois da letra "a".
+
+### Wherein()
+o metodo wherein() retorna um ou mais registros da tabela, a diferença é que o wherein() recebe um array como parâmetro
+```
+use \App\Cliente;
+$clientes = Cliente::wherein('motivo_contato', [1,3])->get();
+```
+nesse caso, o wherein() busca todos os registros que contenham os valores 1 ou 3 no campo motivo_contato.
+
+### WhereNotin()
+já no metodo wherenotin() é o inverso, ou seja, busca todos os registros que não contenham os valores 1 ou 3 no campo motivo_contato.
+```
+use \App\Cliente;
+$clientes = Cliente::wherenotin('motivo_contato', [1,3])->get();
+```
+### WhereBetween()
+o metodo wherebetween() retorna um ou mais registros da tabela, a diferença é que o wherebetween() busca os registros que estão entre os valores passados como parâmetro
+```
+use \App\Cliente;
+$clientes = Cliente::wherebetween('id', [1,3])->get();
+```
+nesse caso, o wherebetween() busca todos os registros que contenham os valores entre 1 e 3 no campo id.
+
+### WhereNotBetween()
+já no metodo wherenotbetween() é o inverso, ou seja, busca todos os registros que não contenham os valores entre 1 e 3 no campo id.
+```
+use \App\Cliente;
+$clientes = Cliente::wherenotbetween('id', [1,3])->get();
+```
+## Selecionando registros com dois ou mais "Wheres"
+para selecionar registros com dois ou mais wheres, basta encadear os metodos where(), ex:
+```
+use \App\Cliente;
+$clientes = Cliente::where('nome','<>','João')->whereIn('motivo_contato', [1,2])->whereBetween('created_at', ['2021-01-01 00:00:00', '2021-01-31 00:00:00'])->get();
+```
+nesse caso, o where() busca todos os registros que não contenham o nome "João" no campo nome, o wherein() busca todos os registros que contenham os valores 1 ou 2 no campo motivo_contato e o wherebetween() busca todos os registros que contenham os valores entre 2021-01-01 00:00:00 e 2021-01-31 00:00:00 no campo created_at.
+
+## Selecionando registros com "Or"
+para selecionar registros com "or", basta encadear o metodo orwhere(), lembrando que no operador or somente uma das condições precisa ser verdadeira para que o registro seja retornado, ex:
+```
+use \App\Cliente;
+$clientes = Cliente::where('nome','<>','João')->orwhere('motivo_contato', 1)->get();
+```
+nesse caso, o where() busca todos os registros que não contenham o nome "João" no campo nome e o orwhere() busca todos os registros que contenham o valor 1 no campo motivo_contato.
+
+## Selecionando registros com "WhereNotNull"
+para selecionar registros com "wherenotnull", basta encadear o metodo wherenotnull(), ex:
+```
+use \App\Cliente;
+$clientes = Cliente::where('nome','<>','João')->wherenotnull('motivo_contato')->get();
+```
+nesse caso, o where() busca todos os registros que não contenham o nome "João" no campo nome e o wherenotnull() busca todos os registros que não contenham o valor null no campo motivo_contato.
+
+## Selecionando registros com "WhereNull"
+para selecionar registros com "wherenull", basta encadear o metodo wherenull(), ex:
+```
+use \App\Cliente;]
+$clientes = Cliente::whereNotNull('updated_at')->get();
+```
+nesse caso, o wherenotnull() busca todos os registros que não contenham o valor null no campo updated_at.
+
+## Selecionando registros com "WhereDate"
+para selecionar registros com "wheredate", basta .. ex:
+```
+use \App\Cliente;
+$clientes = Cliente::whereDate('created_at', '2021-01-01')->get();
+```
+nesse caso, o wheredate() busca todos os registros que contenham a data 2021-01-01 no campo created_at.
+
+Selecionando registros com "WhereMonth"  basta .. ex:
+```
+use \App\Cliente;
+$clientes = Cliente::whereMonth('created_at', '01')->get();
+```
+nesse caso, o wheremonth() busca todos os registros que contenham o mês 01 no campo created_at.
+
+Selecionando registros com "WhereDay"  basta .. ex:
+```
+use \App\Cliente;
+$clientes = Cliente::whereDay('created_at', '01')->get();
+```
+nesse caso, o whereday() busca todos os registros que contenham o dia 01 no campo created_at.
+
+Selecionando registros com "WhereYear"  basta .. ex:
+```
+use \App\Cliente;
+$clientes = Cliente::whereYear('created_at', '2021')->get();
+```
+nesse caso, o whereyear() busca todos os registros que contenham o ano 2021 no campo created_at.
+
+## Selecionando registros com "WhereTime"
+para selecionar registros com "wheretime", basta .. ex:
+```
+use \App\Cliente;
+$clientes = Cliente::whereTime('created_at', '08:00:00')->get();
+```
+nesse caso, o wheretime() busca todos os registros que contenham o horário 08:00:00 no campo created_at.
+
+## Selecionando registros com "WhereColumn"
+para selecionar registros com "wherecolumn", basta .. ex:
+```
+use \App\Cliente;
+$clientes = Cliente::whereColumn('nome', 'telefone')->get();
+```
+nesse caso, o wherecolumn() busca todos os registros que contenham o valores iguais no campo nome e no campo telefone.
+
+## Selecionando registros aplicando precedência logica em operaçoes logicas.
+para selecionar registros aplicando precedência logica em operaçoes logicas, basta .. ex:
+```
+use \App\Cliente;
+$clientes = Cliente::where('nome','<>','João')->orwhere(function($query){
+    $query->wherein('motivo_contato', [1,2]);
+})->get();
+```
+## Ordenando registros
+para ordenar registros, basta encadear o metodo orderby(), ex:
+```
+use \App\Cliente;
+$clientes = Cliente::orderby('nome')->get();
+```
+nesse caso, o orderby() ordena os registros em ordem crescente pelo campo nome.
+
+### Ordenando registros em ordem decrescente
+para ordenar registros em ordem decrescente, basta encadear o metodo orderby() e o metodo desc(), ex:
+```
+use \App\Cliente;
+$clientes = Cliente::all()->orderby('nome')->desc();
+```
+nesse caso, o orderby() ordena os registros em ordem decrescente pelo campo nome.
+
+# Introdução as Collections
+Collections são objetos que representam uma coleção de dados, ou seja, são objetos que representam um conjunto de dados.
+
+## Eloquente - Collections first,last e reverse
+### first()
+o metodo first() retorna o primeiro registro da coleção
+```
+use \App\Cliente;
+$clientes = Cliente::where('nome','<>','João')->orwhere(function($query){
+    $query->wherein('motivo_contato', [1,2]);
+})->get()->first();
+```
+nesse caso, o first() retorna o primeiro registro da coleção.
+
+### last()
+o metodo last() retorna o último registro da coleção
+```
+use \App\Cliente;
+$clientes = Cliente::where('nome','<>','João')->orwhere(function($query){
+    $query->wherein('motivo_contato', [1,2]);
+})->get()->last();
+```
+nesse caso, o last() retorna o último registro da coleção.
+
+### reverse()
+o metodo reverse() retorna a coleção em ordem reversa
+```
+use \App\Cliente;
+$clientes = Cliente::where('nome','<>','João')->orwhere(function($query){
+    $query->wherein('motivo_contato', [1,2]);
+})->get()->reverse();
+```
+nesse caso, o reverse() retorna a coleção em ordem reversa.
+
+## Eloquent - Collection toArray e toJson
+### toArray()
+o metodo toArray() retorna a coleção em formato de array
+```
+use \App\Cliente;
+$clientes = Cliente::all()->toArray();
+```
+nesse caso, o toArray() retorna a coleção em formato de array.
+
+### toJson()
+o metodo toJson() retorna a coleção em formato de json
+```
+use \App\Cliente;
+$clientes = Cliente::all()->toJson();
+```
+nesse caso, o toJson() retorna a coleção em formato de json.
+
+## Eloquent - pluck
+o metodo pluck() retorna uma coleção com os valores de uma coluna específica
+```
+use \App\Cliente;
+$clientes = Cliente::all()->pluck('email');
+```
+nesse caso, o pluck() retorna uma coleção com os valores da coluna email.
+
+## Eloquent - metodos nativos dos objetos Collection
+por ser uma lista gigantesca, não será possível abordar todos os metodos nativos dos objetos Collection, mas, é possível acessar a documentação oficial do laravel para saber mais sobre os metodos nativos dos objetos Collection.
+<a href='https://laravel.com/docs/10.x/collections'>aqui</a>
