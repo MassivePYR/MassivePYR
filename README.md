@@ -13,8 +13,7 @@
   <img alt="snake" src="snake-dark.svg">
 </picture>
 
-### 
-![MassivePYR's GitHub stats](https://github-readme-stats.vercel.app/api?username=massivepyr&show_icons=true&theme=dracula)
+###
 <picture>
   <source media="(prefers-color-scheme: dark)"  srcset="langs-bar-dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="langs-bar-light.svg">
