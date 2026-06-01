@@ -8,6 +8,11 @@
 ⚡ - Programador, Editor, Jogador, Musico e Design - ⚡
 
 ![snake animation](https://github.com/MassivePYR/MassivePYR/blob/output/github-contribution-grid-snake.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="snake-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="snake-light.svg">
+  <img alt="snake" src="snake-dark.svg">
+</picture>
 
 ### 
 ![MassivePYR's GitHub stats](https://github-readme-stats.vercel.app/api?username=massivepyr&show_icons=true&theme=dracula)
