@@ -15,7 +15,11 @@
 
 ### 
 ![MassivePYR's GitHub stats](https://github-readme-stats.vercel.app/api?username=massivepyr&show_icons=true&theme=dracula)
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=massivepyr&theme=dracula)](https://github.com/massivepyr/github-readme-stats)
+<picture>
+  <source media="(prefers-color-scheme: dark)"  srcset="langs-bar-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="langs-bar-light.svg">
+  <img alt="top-languages" src="langs-bar-dark.svg">
+</picture>
 
 ### Linguagens que uso no dia-a-dia
 <div style="display: inline_block"><br/>
