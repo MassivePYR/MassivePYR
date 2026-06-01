@@ -7,7 +7,6 @@
 </div></br>
 ⚡ - Programador, Editor, Jogador, Musico e Design - ⚡
 
-![snake animation](https://github.com/MassivePYR/MassivePYR/blob/output/github-contribution-grid-snake.svg)
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="snake-dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="snake-light.svg">
