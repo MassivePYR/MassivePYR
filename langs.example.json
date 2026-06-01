@@ -1,0 +1,8 @@
+[
+  { "name": "Python",     "pct": 42.3 },
+  { "name": "TypeScript", "pct": 23.1 },
+  { "name": "Rust",       "pct": 14.7 },
+  { "name": "Go",         "pct":  9.2 },
+  { "name": "Shell",      "pct":  6.4 },
+  { "name": "C++",        "pct":  4.3 }
+]

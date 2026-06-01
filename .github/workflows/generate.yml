@@ -1,0 +1,38 @@
+name: Generate Profile Animations
+
+on:
+  schedule:
+    - cron: "0 6 * * *"   # todo dia às 6h UTC
+  workflow_dispatch:        # permite rodar manualmente
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # necessário para fazer git push
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Generate SVGs
+        run: |
+          python3 generate.py  --theme dark  --output snake-dark.svg
+          python3 generate.py  --theme light --output snake-light.svg
+          python3 languages.py --style bar     --theme dark  --output langs-bar-dark.svg
+          python3 languages.py --style bar     --theme light --output langs-bar-light.svg
+          python3 languages.py --style donut   --theme dark  --output langs-donut-dark.svg
+          python3 languages.py --style donut   --theme light --output langs-donut-light.svg
+          python3 languages.py --style compact --theme dark  --output langs-compact-dark.svg
+          python3 languages.py --style compact --theme light --output langs-compact-light.svg
+
+      - name: Commit & push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add *.svg
+          git diff --cached --quiet || git commit -m "chore: update animations"
+          git push
